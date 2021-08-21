@@ -2,8 +2,9 @@ const cookieParser = require("cookie-parser");
 const express = require("express");
 require("dotenv").config();
 const logger = require("morgan");
+const path = require("path");
 
-console.log(process.env);
+// console.log(process.env);
 
 const app = express();
 const host = "localhost";
@@ -28,7 +29,7 @@ const port = process.env.port || 3000;
 //      console.log("Controller  //db");
 //      if(res.isAuth){
 //      console.log("Data")
-//      }else{ 
+//      }else{
 //      console.log("not authenticated")    }
 //      console.log("req.studentFirstName",req.studentFirstName); ==> middleware den diğer middleware' e bilgi ginderilebilir.
 //      console.log("res.studentLastName",res.studentLastName);
@@ -46,18 +47,26 @@ const port = process.env.port || 3000;
 //   }
 // });
 
-app.use(cookieParser());
+// app.use(cookieParser());
 
-app.use((req, res, next) => {
-    console.log("Cookies", req.signedCookies);
-    next();
-})
-
-
+// app.use((req, res, next) => {
+//     console.log("Cookies", req.signedCookies);
+//     next();
+// })
 
 // app.get("/user", (req, res) => {
 //   res.send("User Details");
 // });
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+//middleware
+app.use(express.static(__dirname + "/public/stylesheet"));
+
+app.get("/", (req, res) => {
+  res.render("index");
+});
 
 const server = app.listen(port, host, () => {
   // console.log(server.address());
