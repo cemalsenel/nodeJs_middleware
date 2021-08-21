@@ -1,3 +1,4 @@
+const cookieParser = require("cookie-parser");
 const express = require("express");
 require("dotenv").config();
 const logger = require("morgan");
@@ -9,7 +10,7 @@ const host = "localhost";
 const port = process.env.port || 3000;
 
 //middleware
-app.use(logger("dev"));
+// app.use(logger("dev"));
 
 // app.use((req, res, next) => { //Authentication
 //      console.log("Auth");
@@ -45,9 +46,18 @@ app.use(logger("dev"));
 //   }
 // });
 
-app.get("/user", (req, res) => {
-  res.send("User Details");
-});
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+    console.log("Cookies", req.signedCookies);
+    next();
+})
+
+
+
+// app.get("/user", (req, res) => {
+//   res.send("User Details");
+// });
 
 const server = app.listen(port, host, () => {
   // console.log(server.address());
